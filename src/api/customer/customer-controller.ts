@@ -1,4 +1,4 @@
-import { CREATED, OK } from "http-status";
+import { CREATED, NOT_FOUND, OK } from "http-status";
 import {
   getAllCustomersBusiness,
   getCustomerById,
@@ -52,7 +52,11 @@ const getCustomersById = (): GetCustomerRequestHandler[] => {
     getCustomerById,
     getCustomerSerializer,
     (req, res) => {
-      res.status(OK).json(res.locals.customerToRespond);
+      if (!res.locals.customerToRespond) {
+        res.status(NOT_FOUND).json(res.locals.customerToRespond);
+      } else {
+        res.status(OK).json(res.locals.customerToRespond);
+      }
     },
   ];
 };
