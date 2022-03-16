@@ -33,7 +33,7 @@ const getAllCustomersValidator = () => {
 const getCustomerValidator = () => {
   return celebrate({
     [Segments.PARAMS]: Joi.object().keys({
-      id: Joi.string().required(),
+      id: Joi.string().guid().required(),
     }),
   });
 };
