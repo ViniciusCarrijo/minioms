@@ -26,7 +26,7 @@ const getAllCustomersBusiness: GetAllCustomerRequestHandler = async (
 ) => {
   try {
     const { offset, limit } = res.locals.paginationParamsSerializer;
-    res.locals.customersToRespond = await Customer.findAll({ offset, limit });
+    res.locals.getCustomer = await Customer.findAll({ offset, limit });
     next();
   } catch (error) {
     next(error);
@@ -35,8 +35,8 @@ const getAllCustomersBusiness: GetAllCustomerRequestHandler = async (
 
 const getCustomerById: GetCustomerRequestHandler = async (req, res, next) => {
   try {
-    const { uuid } = res.locals;
-    res.locals.customerToRespond = await Customer.findByPk(uuid);
+    const { id: uuid } = req.params;
+    res.locals.getCustomer = await Customer.findByPk(uuid);
     next();
   } catch (error) {
     next(error);

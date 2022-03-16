@@ -17,8 +17,6 @@ type CustomerAttributes = {
   updatedAt: Date;
 };
 
-type SingleCustomer = CustomerAttributes | null;
-
 type CustomerCreationAttributes = Optional<
   CustomerAttributes,
   "uuid" | "createdAt" | "updatedAt"
@@ -47,11 +45,17 @@ export abstract class CustomerModel extends Model<
   CustomerCreationAttributes
 > {}
 
+// params
+// response
+// body
+// query
+// locals
+
 export type CustomerCreationRequestHandler = RequestHandler<
-  {}, // path params
-  CustomerResponse, // response
-  CustomerCreationRequest, // request
-  {}, // query params
+  {},
+  CustomerResponse,
+  CustomerCreationRequest,
+  {},
   {
     customerToCreate: CustomerCreationAttributes;
     customerCreated: CustomerAttributes;
@@ -60,25 +64,24 @@ export type CustomerCreationRequestHandler = RequestHandler<
 >;
 
 export type GetAllCustomerRequestHandler = RequestHandler<
-  {}, // params
-  CustomerAttributes[], // response
-  {}, // request
-  PaginationParams, // query
+  {},
+  CustomerResponse[],
+  {},
+  PaginationParams,
   {
     paginationParamsSerializer: PaginationParamsSerializer;
-    customersToRespond: CustomerAttributes[];
-  } // local
+    getCustomer: CustomerAttributes[];
+    customersToRespond: CustomerResponse[];
+  }
 >;
 
 export type GetCustomerRequestHandler = RequestHandler<
+  { id: string },
+  CustomerResponse,
+  {},
+  {},
   {
-    id: string;
-  }, // path params
-  SingleCustomer, // response
-  {}, // request
-  {}, // query params
-  {
-    uuid: string;
-    customerToRespond: SingleCustomer;
+    getCustomer: CustomerAttributes | null;
+    customerToRespond: CustomerResponse;
   }
 >;

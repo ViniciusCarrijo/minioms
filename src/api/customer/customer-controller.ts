@@ -7,6 +7,7 @@ import {
 import { createCustomerDeserializer } from "./customer-deserializer";
 import {
   createCustomerSerializer,
+  getAllCustomersSerializer,
   getCustomerSerializer,
   paginationSerializer,
 } from "./customer-serializer";
@@ -38,6 +39,7 @@ const getAllCustomers = (): GetAllCustomerRequestHandler[] => {
     getAllCustomersValidator(),
     paginationSerializer,
     getAllCustomersBusiness,
+    getAllCustomersSerializer,
     (req, res) => {
       res.status(OK).json(res.locals.customersToRespond);
     },
@@ -47,8 +49,8 @@ const getAllCustomers = (): GetAllCustomerRequestHandler[] => {
 const getCustomersById = (): GetCustomerRequestHandler[] => {
   return [
     getCustomerValidator(),
-    getCustomerSerializer,
     getCustomerById,
+    getCustomerSerializer,
     (req, res) => {
       res.status(OK).json(res.locals.customerToRespond);
     },

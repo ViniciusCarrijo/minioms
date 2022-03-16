@@ -1,4 +1,3 @@
-import { PaginationParams } from "../../util/types/paginationHelpers";
 import {
   CustomerCreationRequestHandler,
   GetAllCustomerRequestHandler,
@@ -46,10 +45,53 @@ const paginationSerializer: GetAllCustomerRequestHandler = (req, res, next) => {
   next();
 };
 
-const getCustomerSerializer: GetCustomerRequestHandler = (req, res, next) => {
-  const { id } = req.params;
+const getAllCustomersSerializer: GetAllCustomerRequestHandler = (
+  req,
+  res,
+  next
+) => {
+  const allCustomers = res.locals.getCustomer;
+  res.locals.customersToRespond = [];
 
-  res.locals.uuid = id;
+  allCustomers.map((customer) => {
+    res.locals.customersToRespond.push({
+      uuid: customer.uuid,
+      name: customer.name,
+      contact: {
+        email: customer.email,
+        phone: customer.phone,
+      },
+      document: {
+        cpf: customer.cpf,
+        cnpj: customer.cnpj,
+      },
+      createdAt: customer.createdAt.toISOString(),
+      updatedAt: customer.updatedAt.toISOString(),
+    });
+  });
+
+  next();
+};
+
+const getCustomerSerializer: GetCustomerRequestHandler = (req, res, next) => {
+  const customer = res.locals.getCustomer;
+
+  if (customer) {
+    res.locals.customerToRespond = {
+      uuid: customer.uuid,
+      name: customer.name,
+      contact: {
+        email: customer.email,
+        phone: customer.phone,
+      },
+      document: {
+        cpf: customer.cpf,
+        cnpj: customer.cnpj,
+      },
+      createdAt: customer.createdAt.toISOString(),
+      updatedAt: customer.updatedAt.toISOString(),
+    };
+  }
 
   next();
 };
@@ -58,4 +100,5 @@ export {
   createCustomerSerializer,
   paginationSerializer,
   getCustomerSerializer,
+  getAllCustomersSerializer,
 };
